@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class ApplicationLoader {
     private static ApplicationLoader INSTANCE;
+    ApplicationContext applicationContext = ApplicationContext.getInstance();
 
     private ApplicationLoader() {
 
@@ -20,8 +21,6 @@ public class ApplicationLoader {
         }
         return INSTANCE;
     }
-
-    ApplicationContext applicationContext = ApplicationContext.getInstance();
 
     public ApplicationContext init(int width, int height) {
         initGameField(width, height);

@@ -1,6 +1,5 @@
 package org.example.model.map;
 
-import org.example.config.ApplicationContext;
 import org.example.model.organism.Organism;
 
 import java.util.HashSet;
@@ -8,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class Cell {
-
 
     private final Map<Class<? extends Organism>, Set<Organism>> residents;
 
@@ -23,18 +21,29 @@ public class Cell {
     public boolean addResident(Organism organism) {
         Class<? extends Organism> organismClass = organism.getClass();
         residents.putIfAbsent(organismClass, new HashSet<>());
-        return residents.get(organism.getClass()).add(organism);
+        return residents.get(organismClass).add(organism);
     }
 
     public boolean removeResident(Organism organism) {
         Class<? extends Organism> organismClass = organism.getClass();
-        return residents.get(organismClass).remove(organism);
+        Set<Organism> set = residents.get(organismClass);
+        if (set == null) {
+            return false;
+        }
+        boolean removed = set.remove(organism);
+        if (set.isEmpty()) {
+            residents.remove(organismClass);
+        }
+        return removed;
     }
 
     @Override
     public String toString() {
-        return "Cell{" +
-                "residents=" + residents.values() +
-                '}';
+        StringBuilder sb = new StringBuilder("{");
+        residents.forEach((clazz, set) -> {
+            sb.append(clazz.getSimpleName()).append(",");
+        });
+        sb.append("}");
+        return sb.toString();
     }
 }

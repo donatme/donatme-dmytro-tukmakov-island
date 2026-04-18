@@ -1,7 +1,8 @@
 package org.example.model.organism.animal.herbivore;
 
-public class Rabbit extends Herbivore {
-    public Rabbit() {
+public class Horse extends Herbivore{
+    public Horse() {
         this.speed = 2;
     }
+
 }
