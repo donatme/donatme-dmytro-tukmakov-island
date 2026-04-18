@@ -4,47 +4,81 @@ import org.example.config.ApplicationContext;
 import org.example.config.ApplicationLoader;
 import org.example.model.map.Cell;
 import org.example.model.map.GameField;
+import org.example.model.organism.Organism;
 import org.example.model.organism.animal.Animal;
-import org.example.model.organism.animal.herbivore.Horse;
 import org.example.model.organism.animal.herbivore.Rabbit;
 import org.example.model.organism.animal.predator.Wolf;
+import org.example.model.organism.plant.Plant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
         ApplicationLoader loader = ApplicationLoader.getInstance();
-        ApplicationContext context = loader.init(3, 4);
+        ApplicationContext context = loader.init(2, 2);
         GameField gameField = context.getGameField();
 
-
         Wolf wolf = new Wolf();
-        gameField.addCell(wolf, 0, 1);
+        Rabbit rabbit1 = new Rabbit();
+        Rabbit rabbit2 = new Rabbit();
+        Plant plant = new Plant();
 
-        Rabbit rabbit = new Rabbit();
-        gameField.addCell(rabbit, 1, 2);
+        int x = 0;
+        int y = 0;
 
-        Horse horse = new Horse();
-        gameField.addCell(horse, 2, 3);
+        gameField.addCell(wolf, x, y);
+        gameField.addCell(rabbit1, x, y);
+        gameField.addCell(rabbit2, x, y);
+        gameField.addCell(plant, x, y);
 
-        for (int step = 0; step < 10; step++) {
-            System.out.println("STEP " + step);
-            List<Animal> animals = new ArrayList<>(gameField.getAllAnimals());
-            for (Animal animal : animals) {
-                animal.move(gameField);
-            }
-            printField(gameField.getCells());
+        System.out.println("=== BEFORE ===");
+        printField(gameField.getCells());
+        printStats(gameField);
+
+        List<Animal> animals = new ArrayList<>(gameField.getAllAnimals());
+
+        for (Animal animal : animals) {
+            animal.eat(gameField);
         }
+
+        animals = new ArrayList<>(gameField.getAllAnimals());
+
+        for (Animal animal : animals) {
+            animal.move(gameField);
+        }
+
+        System.out.println("=== AFTER 1 TICK ===");
+        printField(gameField.getCells());
+        printStats(gameField);
     }
 
     private static void printField(Cell[][] cells) {
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
-                System.out.print("cell[" + i + "," + j + "]");
-                System.out.println(cells[i][j]);
+                System.out.println("cell[" + i + "," + j + "] " + cells[i][j]);
             }
-            System.out.println();
         }
+    }
+
+    private static void printStats(GameField field) {
+        System.out.println("--- STATS ---");
+        Cell[][] cells = field.getCells();
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[i].length; j++) {
+                Cell cell = cells[i][j];
+                for (Map.Entry<Class<? extends Organism>, Set<Organism>> entry
+                        : cell.getResidents().entrySet()) {
+                    System.out.println(
+                            "cell[" + i + "," + j + "] "
+                                    + entry.getKey().getSimpleName()
+                                    + " = " + entry.getValue().size()
+                    );
+                }
+            }
+        }
+        System.out.println("--------------");
     }
 }

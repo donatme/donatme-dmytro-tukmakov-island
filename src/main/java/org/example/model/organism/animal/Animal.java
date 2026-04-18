@@ -17,6 +17,7 @@ public abstract class Animal implements Organism, Movable, Reproducible {
         this.x = x;
         this.y = y;
     }
+
     @Override
     public void move(GameField field) {
 
@@ -31,12 +32,24 @@ public abstract class Animal implements Organism, Movable, Reproducible {
         }
 
         Cell[][] cells = field.getCells();
-
         cells[x][y].removeResident(this);
-
         cells[newX][newY].addResident(this);
 
         this.x = newX;
         this.y = newY;
+    }
+
+    public void eat(GameField field) {
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o;
+    }
+
+    @Override
+    public int hashCode() {
+        return System.identityHashCode(this);
     }
 }

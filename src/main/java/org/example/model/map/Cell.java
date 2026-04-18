@@ -27,9 +27,7 @@ public class Cell {
     public boolean removeResident(Organism organism) {
         Class<? extends Organism> organismClass = organism.getClass();
         Set<Organism> set = residents.get(organismClass);
-        if (set == null) {
-            return false;
-        }
+        if (set == null) return false;
         boolean removed = set.remove(organism);
         if (set.isEmpty()) {
             residents.remove(organismClass);
