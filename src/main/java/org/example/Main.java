@@ -21,7 +21,8 @@ public class Main {
         ApplicationContext context = loader.init(2, 2);
         GameField gameField = context.getGameField();
 
-        Wolf wolf = new Wolf();
+        Wolf wolf1 = new Wolf();
+        Wolf wolf2 = new Wolf();
         Rabbit rabbit1 = new Rabbit();
         Rabbit rabbit2 = new Rabbit();
         Plant plant = new Plant();
@@ -29,7 +30,8 @@ public class Main {
         int x = 0;
         int y = 0;
 
-        gameField.addCell(wolf, x, y);
+        gameField.addCell(wolf1, x, y);
+        gameField.addCell(wolf2, x, y);
         gameField.addCell(rabbit1, x, y);
         gameField.addCell(rabbit2, x, y);
         gameField.addCell(plant, x, y);

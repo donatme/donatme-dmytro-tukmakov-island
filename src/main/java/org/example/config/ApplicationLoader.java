@@ -38,7 +38,6 @@ public class ApplicationLoader {
                 cells[i][j] = new Cell(residents);
             }
         }
-
         this.applicationContext.setGameField(gameField);
     }
 }
